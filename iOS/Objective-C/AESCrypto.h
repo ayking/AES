@@ -12,6 +12,6 @@
 @interface AESCrypto : NSObject
 
 + (NSData *)encrypt:(NSData *)data key:(NSString *)key;
-+ (NSData *)decrypt:(NSData *)data key:(NSString *)key;
++ (NSData *)decrypt:(NSData *)package key:(NSString *)key;
 
 @end
