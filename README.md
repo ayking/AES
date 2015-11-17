@@ -1,2 +1,2 @@
-# AESCrypto
+# Crypto
 Encryption / Eecryption
