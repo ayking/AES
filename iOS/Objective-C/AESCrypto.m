@@ -24,6 +24,10 @@ typedef struct {
     NSData *ivData = [self generateRandomIV:kCCBlockSizeAES128];
     memcpy(header.ivData, [ivData bytes], [ivData length]);
     
+    if ([key length] > kCCKeySizeAES256) {
+        NSLog(@"Will limit the key size to %d", kCCKeySizeAES256);
+        key = [key substringToIndex:kCCKeySizeAES256];
+    }
     [key getCString:keyPointer maxLength:sizeof(keyPointer) encoding:NSUTF8StringEncoding];
     
     header.dataLength = [data length];
@@ -44,7 +48,7 @@ typedef struct {
                                      keyPointer, kCCKeySizeAES256,  /* key and its length */
                                      header.ivData,                 /* initialization vector - use random IV everytime */
                                      [data bytes], [data length],   /* input  */
-                                     buff, buffSize,                /* data RETURNED here */
+                                     buff, buffSize,                /* output */
                                      &numBytesEncrypted);
     
     if (status == kCCSuccess) {
@@ -72,6 +76,10 @@ typedef struct {
     char keyPointer[kCCKeySizeAES256 + 2];
     bzero(keyPointer, sizeof(keyPointer));
     
+    if ([key length] > kCCKeySizeAES256) {
+        NSLog(@"Will limit the key size to %d", kCCKeySizeAES256);
+        key = [key substringToIndex:kCCKeySizeAES256];
+    }
     [key getCString:keyPointer maxLength:sizeof(keyPointer) encoding:NSUTF8StringEncoding];
     
     //see https://developer.apple.com/library/ios/documentation/System/Conceptual/ManPages_iPhoneOS/man3/CCryptorCreateFromData.3cc.html
