@@ -117,9 +117,12 @@ typedef struct {
                                    length,
                                    data.mutableBytes);
     
-    NSAssert(err == 0, @"SecRandomCopyBytes errno : %d", errno);
+    if (err == 0) {
+        return data;
+    }
     
-    return data;
+    return nil;
+    
 }
 
 @end
